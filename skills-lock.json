@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "skills": {
+    "gatling-best-practices": {
+      "source": "rcampos09/performance-testing-skills",
+      "sourceType": "github",
+      "skillPath": "skills/gatling-best-practices/SKILL.md",
+      "computedHash": "ae3e7f126fc90a71ff74ed9c7c45d1004a9dc1e53d36d46eb8f9ee205e593231"
+    },
+    "k6-best-practices": {
+      "source": "rcampos09/performance-testing-skills",
+      "sourceType": "github",
+      "skillPath": "skills/k6-best-practices/SKILL.md",
+      "computedHash": "aa8a4134eaf061050b9260e66262c062e2374e369ad5a4a4387d2b9a0a74bf56"
+    },
+    "locust-best-practices": {
+      "source": "rcampos09/performance-testing-skills",
+      "sourceType": "github",
+      "skillPath": "skills/locust-best-practices/SKILL.md",
+      "computedHash": "11b842a7de7859e5f11da3a0b8d83c30d5d2a9e89a584eabb4973f3e48f9cd0d"
+    },
+    "performance-report-analysis": {
+      "source": "rcampos09/performance-testing-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-report-analysis/SKILL.md",
+      "computedHash": "67ad19fd12c26801c78c87d0b0e3573e29afd9c9f292bef3c8cb0b12a1323a50"
+    },
+    "performance-testing-strategy": {
+      "source": "rcampos09/performance-testing-skills",
+      "sourceType": "github",
+      "skillPath": "skills/performance-testing-strategy/SKILL.md",
+      "computedHash": "6b58af606449694b818fcaae3ce3805fc3a71e75a63b703cce650a5e379180ad"
+    }
+  }
+}
