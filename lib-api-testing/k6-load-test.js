@@ -86,6 +86,7 @@ export default function(data) {
     if (res.status === 200) {
       token = res.json('access_token');
     } else {
+      console.error(`Keycloak error response: ${res.body}`);
       fail(`Login failed for ${user.username} with status ${res.status}`);
     }
     
