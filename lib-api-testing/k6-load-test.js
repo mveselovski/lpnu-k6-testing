@@ -63,7 +63,8 @@ export default function(data) {
       client_id: config.auth.clientId,
       username: user.username,
       password: user.password,
-      grant_type: 'password'
+      grant_type: 'password',
+      scope: 'openid profile email'
     };
     
     // Add client_secret if present in config

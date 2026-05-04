@@ -12,7 +12,7 @@ export const config = {
   newsBaseUrl: getEnvVar('NEWS_BASE_URL', 'https://lpnu.ua'),
   
   auth: {
-    clientId: getEnvVar('KEYCLOAK_CLIENT_ID', 'my-university-client'),
+    clientId: getEnvVar('KEYCLOAK_CLIENT_ID', 'my-university-app'),
     clientSecret: getEnvVar('KEYCLOAK_CLIENT_SECRET', ''), // Optional if public client
   },
   
