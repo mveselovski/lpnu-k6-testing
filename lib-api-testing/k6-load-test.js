@@ -127,7 +127,7 @@ export default function (data) {
   });
 
   group('3. Schedule View', () => {
-    const groupName = user.group || 'KN-4';
+    const groupName = encodeURIComponent(user.group || 'KN-4');
     const res = http.get(`${config.studentApiBaseUrl}${config.endpoints.scheduleGroup}?group=${groupName}`, {
       headers: authHeaders,
       tags: { endpoint: 'schedule_group' }
