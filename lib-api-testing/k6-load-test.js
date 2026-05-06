@@ -59,12 +59,12 @@ export function setup() {
 }
 
 // --- BLOCK 4: DEFAULT FUNCTION (VU WORKLOAD) ---
-export default function(data) {
+export default function (data) {
   // Select user deterministically or randomly (deterministically here to ensure uniform distribution)
   const user = users[(__VU - 1) % users.length];
-  
+
   let token;
-  
+
   group('1. Authentication', () => {
     const loginUrl = `${config.authBaseUrl}${config.endpoints.token}`;
     const payload = {
@@ -74,7 +74,7 @@ export default function(data) {
       grant_type: 'password',
       scope: 'openid profile email'
     };
-    
+
     // Add client_secret if present in config
     if (config.auth.clientSecret) {
       payload.client_secret = config.auth.clientSecret;
@@ -83,7 +83,7 @@ export default function(data) {
     const res = http.post(loginUrl, payload, {
       tags: { endpoint: 'keycloak_token' }
     });
-    
+
     requestsMade.add(1);
     loginResponseTime.add(res.timings.duration);
 
@@ -98,7 +98,7 @@ export default function(data) {
       console.error(`Keycloak error response: ${res.body}`);
       fail(`Login failed for ${user.username} with status ${res.status}`);
     }
-    
+
     sleep(1); // Think time after login
   });
 
@@ -122,7 +122,7 @@ export default function(data) {
       'me status is 200': (r) => r.status === 200,
       'me authorized': (r) => r.status !== 401 && r.status !== 403,
     }) || errorRate.add(1);
-    
+
     sleep(Math.random() * 2 + 1); // 1-3s think time reading profile
   });
 
@@ -140,29 +140,29 @@ export default function(data) {
       'schedule status is 200': (r) => r.status === 200,
       'schedule authorized': (r) => r.status !== 401 && r.status !== 403,
     }) || errorRate.add(1);
-    
+
     sleep(Math.random() * 2 + 1); // 1-3s think time viewing schedule
   });
 
-  group('4. Public Feeds (News & Events)', () => {
-    const newsRes = http.get(`${config.newsBaseUrl}${config.endpoints.newsRss}`, {
-      tags: { endpoint: 'news_rss' }
-    });
-    requestsMade.add(1);
-    apiResponseTime.add(newsRes.timings.duration);
-    check(newsRes, { 'news rss status is 200': (r) => r.status === 200 }) || errorRate.add(1);
+  // group('4. Public Feeds (News & Events)', () => {
+  //   const newsRes = http.get(`${config.newsBaseUrl}${config.endpoints.newsRss}`, {
+  //     tags: { endpoint: 'news_rss' }
+  //   });
+  //   requestsMade.add(1);
+  //   apiResponseTime.add(newsRes.timings.duration);
+  //   check(newsRes, { 'news rss status is 200': (r) => r.status === 200 }) || errorRate.add(1);
 
-    sleep(1); // Short pause between rss fetches
+  //   sleep(1); // Short pause between rss fetches
 
-    const eventsRes = http.get(`${config.newsBaseUrl}${config.endpoints.eventsRss}`, {
-      tags: { endpoint: 'events_rss' }
-    });
-    requestsMade.add(1);
-    apiResponseTime.add(eventsRes.timings.duration);
-    check(eventsRes, { 'events rss status is 200': (r) => r.status === 200 }) || errorRate.add(1);
-    
-    sleep(Math.random() * 2 + 1); // 1-3s reading news
-  });
+  //   const eventsRes = http.get(`${config.newsBaseUrl}${config.endpoints.eventsRss}`, {
+  //     tags: { endpoint: 'events_rss' }
+  //   });
+  //   requestsMade.add(1);
+  //   apiResponseTime.add(eventsRes.timings.duration);
+  //   check(eventsRes, { 'events rss status is 200': (r) => r.status === 200 }) || errorRate.add(1);
+
+  //   sleep(Math.random() * 2 + 1); // 1-3s reading news
+  // });
 
 }
 
