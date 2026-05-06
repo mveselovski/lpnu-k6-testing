@@ -34,11 +34,19 @@ const requestsMade = new Counter('requests_made');
 // Using SharedArray prevents OOM errors by loading the users.json file exactly once, rather than per VU
 const users = new SharedArray('users', () => {
   try {
+    // Standard k6: relative to the script file
     return JSON.parse(open('./data/users.json'));
-  } catch (e) {
-    // Provide a fallback gracefully if file is missing
-    console.warn("Could not load users.json, using fallback user.");
-    return [{ username: 'teststudent', password: 'testpassword', group: 'KN-4' }];
+  } catch (e1) {
+    try {
+      // Fallback: relative to the current working directory (where the k6 command is run)
+      return JSON.parse(open('./lib-api-testing/data/users.json'));
+    } catch (e2) {
+      // Provide a fallback gracefully if file is missing
+      console.warn("Could not load users.json.");
+      console.warn("Error 1 (script dir): " + e1.message);
+      console.warn("Error 2 (cwd dir): " + e2.message);
+      return [{ username: 'teststudent', password: 'testpassword', group: 'KN-4' }];
+    }
   }
 });
 
