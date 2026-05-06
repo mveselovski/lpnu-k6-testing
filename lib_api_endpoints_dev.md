@@ -1,4 +1,4 @@
-# My University App API Endpoints Documentation
+# My University App API Endpoints Documentation (Development)
 
 This file documents the endpoints for the Student, Schedule, News, and Authentication services used in the application.
 
