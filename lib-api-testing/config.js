@@ -9,6 +9,7 @@ const getEnvVar = (name, defaultValue) => {
 export const config = {
   authBaseUrl: getEnvVar('AUTH_BASE_URL', 'https://vm4-dev-dto.lviv.education/realms/master'),
   studentApiBaseUrl: getEnvVar('STUDENT_API_BASE_URL', 'https://vm4-dev-dto.lviv.education/student/api'),
+  profileApiBaseUrl: getEnvVar('PROFILE_API_BASE_URL', getEnvVar('STUDENT_API_BASE_URL', 'https://vm4-dev-dto.lviv.education/student/api').replace('/student/api', '/api')),
   newsBaseUrl: getEnvVar('NEWS_BASE_URL', 'https://lpnu.ua'),
   
   auth: {

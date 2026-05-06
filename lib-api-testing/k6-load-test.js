@@ -110,7 +110,7 @@ export default function (data) {
   };
 
   group('2. Student Profile', () => {
-    const res = http.get(`${config.studentApiBaseUrl}${config.endpoints.me}`, {
+    const res = http.get(`${config.profileApiBaseUrl}${config.endpoints.me}`, {
       headers: authHeaders,
       tags: { endpoint: 'student_me' }
     });
