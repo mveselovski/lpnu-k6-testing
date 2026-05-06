@@ -110,10 +110,16 @@ export default function (data) {
   };
 
   group('2. Student Profile', () => {
-    const res = http.get(`${config.profileApiBaseUrl}${config.endpoints.me}`, {
+    const meUrl = `${config.studentApiBaseUrl}${config.endpoints.me}`;
+    const res = http.get(meUrl, {
       headers: authHeaders,
       tags: { endpoint: 'student_me' }
     });
+
+    if (res.status === 404) {
+      console.warn(`[DEBUG] /me returned 404! URL: ${meUrl}`);
+      console.warn(`[DEBUG] /me response body: ${res.body}`);
+    }
 
     requestsMade.add(1);
     apiResponseTime.add(res.timings.duration);
