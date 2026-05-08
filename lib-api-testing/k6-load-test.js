@@ -5,16 +5,31 @@ import { Rate, Trend, Counter } from 'k6/metrics';
 import { config } from './config.js';
 
 // --- BLOCK 1: OPTIONS ---
-export const options = {
+// Determine test execution mode - check if STAGED=true environment variable is set
+const useStages = __ENV.STAGED === 'true';
+
+export const options = useStages ? {
+  // Staged execution configuration
   scenarios: {
     load: {
       executor: 'ramping-vus', // Chosen executor: ramping-vus handles standard load progression (warm-up, steady state, cool-down)
       startVUs: 0,
-      stages: config.testOptions.stages,
+      stages: config.testOptions.stagesOptions.stages,
       gracefulRampDown: '30s',
       gracefulStop: '30s',
     },
   },
+  thresholds: {
+    http_req_duration: ['p(95)<2000'], // 95% of requests should complete in under 2s
+    http_req_failed: ['rate<0.01'],    // Error rate must be under 1%
+    checks: ['rate>0.99'],             // 99% of checks must pass
+    'login_response_time': ['p(95)<3000'],
+    'api_response_time': ['p(95)<1000']
+  },
+} : {
+  // Simple duration-based configuration
+  vus: config.testOptions.simpleOptions.vus,
+  duration: config.testOptions.simpleOptions.duration,
   thresholds: {
     http_req_duration: ['p(95)<2000'], // 95% of requests should complete in under 2s
     http_req_failed: ['rate<0.01'],    // Error rate must be under 1%
@@ -52,6 +67,12 @@ const users = new SharedArray('users', () => {
 
 // --- BLOCK 3: SETUP ---
 export function setup() {
+  console.log(`Test execution mode: ${useStages ? 'STAGED load pattern' : 'SIMPLE duration'}`);
+  if (useStages) {
+    console.log('Running with stages:', JSON.stringify(config.testOptions.stagesOptions.stages));
+  } else {
+    console.log(`Running with ${config.testOptions.simpleOptions.vus} VUs for ${config.testOptions.simpleOptions.duration}`);
+  }
   console.log('Starting load test for Library/University APIs...');
   // Note: We DO NOT perform authentication here. Sharing a single token across all VUs is a bad practice
   // as it prevents accurate representation of server-side session allocation and load.

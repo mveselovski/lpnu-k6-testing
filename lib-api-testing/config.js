@@ -17,13 +17,32 @@ export const config = {
   },
   
   testOptions: {
-    vus: parseInt(getEnvVar('VUS', 10)),
-    duration: getEnvVar('DURATION', '1m'),
-    stages: [
-      { duration: getEnvVar('STAGE1_DURATION', '10s'), target: parseInt(getEnvVar('STAGE1_TARGET', 5)) },
-      { duration: getEnvVar('STAGE2_DURATION', '30s'), target: parseInt(getEnvVar('STAGE2_TARGET', 10)) },
-      { duration: getEnvVar('STAGE3_DURATION', '10s'), target: parseInt(getEnvVar('STAGE3_TARGET', 0)) },
-    ],
+    // Simple execution with constant VUs
+    simpleOptions: {
+      duration: getEnvVar('DURATION', '5m'),
+      vus: parseInt(getEnvVar('VUS', 10)),
+    },
+    // Advanced execution with stages
+    stagesOptions: {
+      stages: [
+        // Phase 1: Start with 50 VUs (10 minutes)
+        { duration: '10m', target: parseInt(getEnvVar('VUS_RAMPUP', 50)) },   
+        // Phase 2: Ramp up to moderate load (20 minutes)
+        { duration: '20m', target: parseInt(getEnvVar('VUS_NORMAL', 300)) },  
+        // Phase 3: Maintain moderate load (60 minutes)
+        { duration: '60m', target: parseInt(getEnvVar('VUS_NORMAL', 300)) },  
+        // Phase 4: Spike to peak load (15 minutes)
+        { duration: '15m', target: parseInt(getEnvVar('VUS_PEAK', 600)) }, 
+        // Phase 5: Maintain spike load (15 minutes)
+        { duration: '15m', target: parseInt(getEnvVar('VUS_PEAK', 600)) }, 
+        // Phase 6: Return to moderate load (30 minutes)
+        { duration: '30m', target: parseInt(getEnvVar('VUS_NORMAL', 300)) },  
+        // Phase 7: Maintain moderate load again (20 minutes)
+        { duration: '20m', target: parseInt(getEnvVar('VUS_NORMAL', 300)) },  
+        // Phase 8: Ramp down to zero (10 minutes)
+        { duration: '10m', target: 0 }     
+      ]
+    }
   },
   
   endpoints: {
