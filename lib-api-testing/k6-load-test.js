@@ -99,7 +99,9 @@ export default function (data) {
       fail(`Login failed for ${user.username} with status ${res.status}`);
     }
 
-    sleep(1); // Think time after login
+    // 10-15s delay after login
+    console.log(`Login successful for ${user.username}. Delaying 10-15 seconds before continuing flow.`);
+    sleep(Math.random() * 5 + 10);
   });
 
   if (!token) return; // Halt iteration if login failed
@@ -170,6 +172,9 @@ export default function (data) {
   //   sleep(Math.random() * 2 + 1); // 1-3s reading news
   // });
 
+  // Wait 10-15 seconds before the next iteration (next login)
+  console.log(`Flow complete for ${user.username}. Delaying 10-15 seconds before next login.`);
+  sleep(Math.random() * 5 + 10);
 }
 
 // --- BLOCK 5: TEARDOWN ---
